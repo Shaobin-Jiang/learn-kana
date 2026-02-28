@@ -1,0 +1,220 @@
+:root {
+  --bg-1: #f7efe3;
+  --bg-2: #e4efe7;
+  --ink: #1a1f1b;
+  --muted: #4c5a55;
+  --accent: #1f7a5b;
+  --accent-2: #a65a2a;
+  --card: #fff8ee;
+  --line: #d9cfc0;
+  --shadow: rgba(26, 31, 27, 0.12);
+  --font-title: "Fraunces", "Georgia", serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(31, 122, 91, 0.12), transparent 40%),
+    radial-gradient(circle at 70% 10%, rgba(166, 90, 42, 0.18), transparent 45%),
+    linear-gradient(135deg, var(--bg-1), var(--bg-2));
+  min-height: 100vh;
+}
+
+header {
+  padding: 32px 20px 10px;
+  text-align: center;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-family: var(--font-title);
+  font-size: clamp(28px, 4vw, 42px);
+  letter-spacing: 0.5px;
+}
+
+p.lede {
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.app {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 0 16px 40px var(--shadow);
+  padding: 20px;
+}
+
+.tabbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tabbar button {
+  border: 1px solid var(--line);
+  background: transparent;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tabbar button.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 16px;
+}
+
+.grid.single {
+  grid-template-columns: 1fr;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+
+th,
+td {
+  border: 1px solid var(--line);
+  padding: 10px 8px;
+  text-align: center;
+}
+
+th {
+  background: rgba(31, 122, 91, 0.1);
+  font-weight: 700;
+}
+
+.kana {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.quiz-card {
+  display: grid;
+  gap: 16px;
+}
+
+.prompt {
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.answer {
+  padding: 12px 14px;
+  background: rgba(31, 122, 91, 0.08);
+  border-radius: 12px;
+  font-size: 20px;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+button.primary {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button.secondary {
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  font-size: 16px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 150px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  font-family: "JetBrains Mono", "SFMono-Regular", monospace;
+  font-size: 13px;
+}
+
+.note {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.status {
+  font-weight: 600;
+}
+
+.status.ok {
+  color: var(--accent);
+}
+
+.status.bad {
+  color: var(--accent-2);
+}
+
+.sequence-group {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+}
+
+.sequence-title {
+  margin: 0;
+  font-size: 16px;
+}

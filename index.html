@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Japanese Kana Memory Lab</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=IBM+Plex+Sans:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <h1>Japanese Kana Memory Lab</h1>
+        <p class="lede">Reference tables and quizzes for 平假名 / 片假名 / 罗马音.</p>
+      </header>
+
+      <main class="app">
+        <div class="grid" :class="{ single: activeTab === 'reference' }">
+          <section class="panel">
+            <div class="tabbar">
+              <button :class="{ active: activeTab === 'reference' }" @click="activeTab = 'reference'">
+                Reference
+              </button>
+              <button :class="{ active: activeTab === 'romajiQuiz' }" @click="activeTab = 'romajiQuiz'">
+                Romaji → Kana
+              </button>
+              <button :class="{ active: activeTab === 'kanaQuiz' }" @click="activeTab = 'kanaQuiz'">
+                Kana → Romaji
+              </button>
+            </div>
+
+            <section v-if="activeTab === 'reference'">
+              <table>
+                <thead>
+                  <tr>
+                    <th>罗马音</th>
+                    <th>平假名</th>
+                    <th>片假名</th>
+                    <th>罗马音</th>
+                    <th>平假名</th>
+                    <th>片假名</th>
+                    <th>罗马音</th>
+                    <th>平假名</th>
+                    <th>片假名</th>
+                    <th>罗马音</th>
+                    <th>平假名</th>
+                    <th>片假名</th>
+                    <th>罗马音</th>
+                    <th>平假名</th>
+                    <th>片假名</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(row, rowIndex) in tableRows" :key="rowIndex">
+                    <template v-for="(cell, index) in row" :key="index">
+                      <td>{{ cell.romaji }}</td>
+                      <td class="kana">{{ cell.hira }}</td>
+                      <td class="kana">{{ cell.kata }}</td>
+                    </template>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section v-else-if="activeTab === 'romajiQuiz'" class="quiz-card">
+              <div class="note">Progress: {{ romajiProgress }}</div>
+              <div class="prompt">{{ currentRomaji.romaji }}</div>
+              <div class="controls">
+                <button class="primary" @click="showAnswer = true">Show Answer</button>
+                <button class="secondary" @click="nextRomaji" :disabled="!showAnswer">Next</button>
+              </div>
+              <div v-if="showAnswer" class="answer">
+                <div>平假名: <span class="kana">{{ currentRomaji.hira }}</span></div>
+                <div>片假名: <span class="kana">{{ currentRomaji.kata }}</span></div>
+              </div>
+            </section>
+
+            <section v-else class="quiz-card">
+              <div class="note">Progress: {{ kanaProgress }}</div>
+              <div class="prompt">{{ currentKana.display }}</div>
+              <input type="text" v-model="romajiInput" placeholder="Type the romaji" @keydown.enter="checkRomaji" />
+              <div class="controls">
+                <button class="primary" @click="checkRomaji">Check</button>
+                <button class="secondary" v-if="romajiFeedback && !romajiFeedback.ok" @click="nextKana">Next</button>
+              </div>
+              <div v-if="romajiFeedback" class="answer">
+                <div class="status" :class="romajiFeedback.ok ? 'ok' : 'bad'">{{ romajiFeedback.message }}</div>
+                <div>Correct: <strong>{{ currentKana.romaji }}</strong></div>
+              </div>
+            </section>
+          </section>
+
+          <aside v-if="activeTab !== 'reference'" class="panel">
+            <h2>Sequence Control</h2>
+            <p class="note">
+              Provide a JavaScript function body with no arguments. It must return an array of
+              romaji strings that define the quiz order. Each quiz stores its function in localStorage.
+            </p>
+            <div class="sequence-group">
+              <h3 class="sequence-title">Romaji → Kana</h3>
+              <textarea v-model="romajiSequenceCode"></textarea>
+              <div class="controls">
+                <button class="primary" @click="applySequence('romaji')">Apply</button>
+                <button class="secondary" @click="resetSequence('romaji')">Reset</button>
+              </div>
+              <p class="note" v-if="romajiSequenceError">{{ romajiSequenceError }}</p>
+            </div>
+            <div class="sequence-group">
+              <h3 class="sequence-title">Kana → Romaji</h3>
+              <textarea v-model="kanaSequenceCode"></textarea>
+              <div class="controls">
+                <button class="primary" @click="applySequence('kana')">Apply</button>
+                <button class="secondary" @click="resetSequence('kana')">Reset</button>
+              </div>
+              <p class="note" v-if="kanaSequenceError">{{ kanaSequenceError }}</p>
+            </div>
+            <p class="note">
+              Example:
+              <br />
+              <code>return ["a", "u", "i", "a", "o"];</code>
+              <br />
+              <code>return ["a", "i", "u", "e", "o", "ka", "ki", "ku"];</code>
+            </p>
+          </aside>
+        </div>
+      </main>
+    </div>
+
+    <script src="js/app.js"></script>
+  </body>
+</html>
